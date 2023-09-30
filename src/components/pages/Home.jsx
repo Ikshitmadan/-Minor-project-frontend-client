@@ -6,23 +6,11 @@ import { ChatBot } from '../ChatBot'
 
 const Home = () => {
 
-    const [socket,setsocket]=useState();
-
-    useEffect(()=>{
-       
-                const socket = io('http://localhost:8080');
-        console.log(socket);
-       setsocket(socket)
-              
-                return ()=>{
-        setsocket(null);
-        
-                }
-            },[])
+   
 
     return (
         <div>
-<ChatBot socket={socket}/>
+{/* <ChatBot socket={socket}/> */}
 
             
 </div>
