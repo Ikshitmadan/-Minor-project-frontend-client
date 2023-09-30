@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+=======
+import React, { useEffect, useRef, useState } from 'react'
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 import AceEditor from 'react-ace'
 import { useParams } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
 import './Room.css'
+<<<<<<< HEAD
 //import io from 'socket.io-client'
+=======
+import io from 'socket.io-client'
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-typescript";
 import "ace-builds/src-noconflict/mode-python";
@@ -19,6 +27,7 @@ import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/ext-searchbox";
 import { ChatBot } from '../ChatBot'
+<<<<<<< HEAD
 import { useSocket } from '../../context/SocketProvider'
 import peer from "../../services/peer";
 import ReactPlayer from "react-player";
@@ -34,6 +43,27 @@ const Room = () => {
     //             }
     //         },[])
     const socket = useSocket();
+=======
+
+
+const Room = () => {
+
+
+
+    const [socket,setsocket]=useState();
+
+    useEffect(()=>{
+       
+                const socket = io('http://localhost:8080');
+        console.log(socket);
+       setsocket(socket)
+              
+                return ()=>{
+        setsocket(null);
+        
+                }
+            },[])
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
     const { roomId } = useParams()
     const [language, setLanguage] = useState('javascript');
     const [codeKeyBinding, setCodeKeyBinding] = useState(undefined);
@@ -41,6 +71,7 @@ const Room = () => {
 
     const languagesAvailable = ["javascript", "typescript", "python", "java", "yaml", "golang", "c_cpp", "html", "css"]
     const codeKeyBindingsAvailable = ["default", "emacs", "vim"];
+<<<<<<< HEAD
 
     const [code, setcode] = useState("");
 
@@ -49,6 +80,16 @@ const Room = () => {
     const [input, setinput] = useState('');
 
     const [output, setoutput] = useState('');
+=======
+     
+    const [code,setcode]=useState("");
+
+    const AceEditorRef=useRef(null);
+
+    const [input,setinput]=useState('');
+
+    const [output,setoutput]=useState('');
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
     var qs = require('qs');
 
     const handleLanguage = (e) => {
@@ -81,6 +122,7 @@ const Room = () => {
     }
 
 
+<<<<<<< HEAD
     function handleChange(change) {
 
         setcode(change);
@@ -92,10 +134,24 @@ const Room = () => {
         }
 
 
+=======
+    function handleChange(change){
+
+        setcode(change);
+
+        if(socket){
+
+
+            socket.emit('codechange',{code:change})
+        }
+
+     
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
     }
 
 
+<<<<<<< HEAD
 
 
 
@@ -114,10 +170,31 @@ const Room = () => {
             })
 
             socket.on('outputchange', (outputData) => {
+=======
+  
+
+        
+
+    useEffect(()=>{
+
+        if(socket  !=null){
+
+            socket.on('codeadded',(codeData)=>{
+
+              console.log(codeData.code);
+      const newText=codeData.code
+    setcode(newText);
+              
+    
+            })
+
+            socket.on('outputchange',(outputData)=>{
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
                 setoutput(outputData)
             })
 
+<<<<<<< HEAD
             socket.on('inputchange', (inputData) => {
                 setinput(inputData)
             })
@@ -143,6 +220,33 @@ const Room = () => {
     function InputHandler(event) {
 
         socket.emit('inputchange', event.target.value);
+=======
+            socket.on('inputchange',(inputData)=>{
+                setinput(inputData)
+            })
+    
+
+        }
+       
+        
+    })
+
+
+    useEffect(()=>{
+        
+
+        if(output && socket){
+
+            socket.emit('outputchange',output);
+
+        }
+        
+    },[output,socket])
+
+    function InputHandler(event){
+
+        socket.emit('inputchange',event.target.value);
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
         setinput(event.target.value)
 
@@ -151,20 +255,34 @@ const Room = () => {
     }
 
 
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
 
 
     const compile = () => {
+<<<<<<< HEAD
         console.log(code);
 
         console.log(language);
+=======
+console.log(code);
+
+console.log(language);
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
         var data = qs.stringify({
             'code': code,
             'language': language,
             'input': input
         });
+<<<<<<< HEAD
         console.log(data);
+=======
+console.log(data);
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
         console.log(code);
         var config = {
@@ -172,6 +290,7 @@ const Room = () => {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
+<<<<<<< HEAD
             body: data
         };
         fetch('https://api.codex.jaagrav.in', config)
@@ -289,6 +408,33 @@ const Room = () => {
         handleNegoNeedIncoming,
         handleNegoNeedFinal,
     ]);
+=======
+            body : data
+        };
+        fetch('https://api.codex.jaagrav.in',config)
+        .then(res => res.json())
+        .then(data => {
+            if(data['error'].length==0) {
+                // setTc(true)
+           setoutput(data['output']);
+                
+                toast.success("compiled sucessfully")
+                console.log(data['output']);
+                // setOutput(data['output'])
+            }
+            else {
+                // setTc(false)
+                toast.error("compilation error")
+                setoutput(data['error'])
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    console.log(code);
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
     return (
         <div className='room'>
             <div className="roomSidebar">
@@ -352,6 +498,7 @@ const Room = () => {
                         console.log(roomId)
                     }}>Copy Room ID</button>
                     <button className='roomSidebarBtn'>Leave</button>
+<<<<<<< HEAD
                     <button onClick={compile} className='roomSidebarBtn'>Run</button>
 
                     <input
@@ -374,6 +521,30 @@ const Room = () => {
 
 
                     <ChatBot socket={socket} />
+=======
+                    <button onClick={compile}  className='roomSidebarBtn'>Run</button>
+
+             <input
+            type="text"
+            id="input"
+            name="input"
+            placeholder='enter input'
+            value={input}
+            onChange={InputHandler}
+          />
+
+            <input
+            type="text"
+            id="output"
+            name="output"
+            placeholder='o/p'
+            value={output}
+          
+          />
+ 
+          
+<ChatBot socket={socket}/>
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
 
 
@@ -382,9 +553,15 @@ const Room = () => {
                 </div>
             </div>
             <AceEditor
+<<<<<<< HEAD
                 ref={AceEditorRef}
                 setOptions={{ useWorker: false }}
                 placeholder='Write your code here'
+=======
+            ref={AceEditorRef}
+ setOptions={{ useWorker: false }}
+ placeholder='Write your code here'
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
                 className='roomCodeEditor'
                 mode={language}
                 keyboardHandler={codeKeyBinding}
@@ -405,6 +582,7 @@ const Room = () => {
                     $blockScrolling: true
                 }}
                 value={code}
+<<<<<<< HEAD
                 onChange={(change) => handleChange(change)}
 
             />
@@ -440,6 +618,12 @@ const Room = () => {
         </>
       )}
     </div>
+=======
+                onChange={(change)=>handleChange(change)}
+                
+            />
+            <Toaster />
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
         </div>
     )
 }
