@@ -42,6 +42,10 @@
   cursor: pointer;
   transition: all 0.45s ease-in-out 0.05s;
 }
+<<<<<<< HEAD
+
+=======
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 .roomSidebarCopyBtn:hover {
   color: rgb(218, 126, 218);
   background-color: white;
@@ -58,6 +62,10 @@
   cursor: pointer;
   transition: all 0.45s ease-in-out 0.05s;
 }
+<<<<<<< HEAD
+
+=======
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 .roomSidebarBtn:hover {
   color: white;
   background-color: black;
@@ -107,7 +115,11 @@
     flex: 0.25;
   }
 
+<<<<<<< HEAD
+  .roomSidebar>*:nth-child(2) {
+=======
   .roomSidebar > *:nth-child(2) {
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
     margin-top: auto;
   }
 
@@ -115,3 +127,16 @@
     flex: 0.75;
   }
 }
+<<<<<<< HEAD
+
+.bt {
+  background-color: yellow;
+  color: black;
+  text-align: center;
+  font-size: 15px;
+  padding: 20px;
+  border-radius: 15px;
+  border: 3px dashed blue;
+}
+=======
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
