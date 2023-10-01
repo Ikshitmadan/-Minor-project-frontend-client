@@ -1,9 +1,17 @@
+<<<<<<< HEAD
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+=======
 import React, { useEffect, useRef, useState } from 'react'
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 import AceEditor from 'react-ace'
 import { useParams } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
 import './Room.css'
+<<<<<<< HEAD
+//import io from 'socket.io-client'
+=======
 import io from 'socket.io-client'
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-typescript";
 import "ace-builds/src-noconflict/mode-python";
@@ -19,6 +27,23 @@ import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/ext-searchbox";
 import { ChatBot } from '../ChatBot'
+<<<<<<< HEAD
+import { useSocket } from '../../context/SocketProvider'
+import peer from "../../services/peer";
+import ReactPlayer from "react-player";
+
+const Room = () => {
+    // const [socket,setsocket]=useState();
+    // useEffect(()=>{
+    //             const socket = io('http://localhost:8080');
+    //     console.log(socket);
+    //    setsocket(socket)      
+    //             return ()=>{
+    //     setsocket(null);
+    //             }
+    //         },[])
+    const socket = useSocket();
+=======
 
 
 const Room = () => {
@@ -38,6 +63,7 @@ const Room = () => {
         
                 }
             },[])
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
     const { roomId } = useParams()
     const [language, setLanguage] = useState('javascript');
     const [codeKeyBinding, setCodeKeyBinding] = useState(undefined);
@@ -45,6 +71,16 @@ const Room = () => {
 
     const languagesAvailable = ["javascript", "typescript", "python", "java", "yaml", "golang", "c_cpp", "html", "css"]
     const codeKeyBindingsAvailable = ["default", "emacs", "vim"];
+<<<<<<< HEAD
+
+    const [code, setcode] = useState("");
+
+    const AceEditorRef = useRef(null);
+
+    const [input, setinput] = useState('');
+
+    const [output, setoutput] = useState('');
+=======
      
     const [code,setcode]=useState("");
 
@@ -53,6 +89,7 @@ const Room = () => {
     const [input,setinput]=useState('');
 
     const [output,setoutput]=useState('');
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
     var qs = require('qs');
 
     const handleLanguage = (e) => {
@@ -85,6 +122,19 @@ const Room = () => {
     }
 
 
+<<<<<<< HEAD
+    function handleChange(change) {
+
+        setcode(change);
+
+        if (socket) {
+
+
+            socket.emit('codechange', { code: change })
+        }
+
+
+=======
     function handleChange(change){
 
         setcode(change);
@@ -96,10 +146,31 @@ const Room = () => {
         }
 
      
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
     }
 
 
+<<<<<<< HEAD
+
+
+
+
+    useEffect(() => {
+
+        if (socket != null) {
+
+            socket.on('codeadded', (codeData) => {
+
+                console.log(codeData.code);
+                const newText = codeData.code
+                setcode(newText);
+
+
+            })
+
+            socket.on('outputchange', (outputData) => {
+=======
   
 
         
@@ -118,10 +189,38 @@ const Room = () => {
             })
 
             socket.on('outputchange',(outputData)=>{
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
                 setoutput(outputData)
             })
 
+<<<<<<< HEAD
+            socket.on('inputchange', (inputData) => {
+                setinput(inputData)
+            })
+
+
+        }
+
+
+    })
+
+
+    useEffect(() => {
+
+
+        if (output && socket) {
+
+            socket.emit('outputchange', output);
+
+        }
+
+    }, [output, socket])
+
+    function InputHandler(event) {
+
+        socket.emit('inputchange', event.target.value);
+=======
             socket.on('inputchange',(inputData)=>{
                 setinput(inputData)
             })
@@ -147,6 +246,7 @@ const Room = () => {
     function InputHandler(event){
 
         socket.emit('inputchange',event.target.value);
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
         setinput(event.target.value)
 
@@ -155,20 +255,34 @@ const Room = () => {
     }
 
 
+<<<<<<< HEAD
+
+=======
     
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
 
 
     const compile = () => {
+<<<<<<< HEAD
+        console.log(code);
+
+        console.log(language);
+=======
 console.log(code);
 
 console.log(language);
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
         var data = qs.stringify({
             'code': code,
             'language': language,
             'input': input
         });
+<<<<<<< HEAD
+        console.log(data);
+=======
 console.log(data);
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
         console.log(code);
         var config = {
@@ -176,6 +290,125 @@ console.log(data);
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
+<<<<<<< HEAD
+            body: data
+        };
+        fetch('https://api.codex.jaagrav.in', config)
+            .then(res => res.json())
+            .then(data => {
+                if (data['error'].length == 0) {
+                    // setTc(true)
+                    setoutput(data['output']);
+
+                    toast.success("compiled sucessfully")
+                    console.log(data['output']);
+                    // setOutput(data['output'])
+                }
+                else {
+                    // setTc(false)
+                    toast.error("compilation error")
+                    setoutput(data['error'])
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    console.log(code);
+    //webRTC code
+    const [remoteSocketId, setRemoteSocketId] = useState(null);
+    const [myStream, setMyStream] = useState();
+    const [remoteStream, setRemoteStream] = useState();
+    const handleUserJoined = useCallback(({ email, id }) => {
+        console.log(`Email ${email} joined room`);
+        setRemoteSocketId(id);
+    }, []);
+    const handleCallUser = useCallback(async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: true,
+        });
+        const offer = await peer.getOffer();
+        socket.emit("user:call", { to: remoteSocketId, offer });
+        setMyStream(stream);
+    }, [remoteSocketId, socket]);
+    const handleIncomingCall = useCallback(
+        async ({ from, offer }) => {
+            setRemoteSocketId(from);
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: true,
+            });
+            setMyStream(stream);
+            console.log("Incoming call", from, offer);
+            const ans = await peer.getAnswer(offer);
+            socket.emit("call:accepted", { to: from, ans });
+        },
+        [socket]
+    );
+    const sendStreams = useCallback(() => {
+        for (const track of myStream.getTracks()) {
+            peer.peer.addTrack(track, myStream);
+        }
+    }, [myStream])
+    const handleCallAccepted = useCallback(
+        ({ from, ans }) => {
+            peer.setLocalDescription(ans);
+            console.log("Call Accepted");
+            sendStreams();
+        },
+        [sendStreams]
+    );
+
+    const handleNegoNeeded = useCallback(async () => {
+        const offer = await peer.getOffer();
+        socket.emit("peer:nego:needed", { offer, to: remoteSocketId });
+    }, [socket, remoteSocketId]);
+    useEffect(() => {
+        peer.peer.addEventListener("negotiationneeded", handleNegoNeeded);
+        return () => {
+            peer.peer.removeEventListener("negotiationneeded", handleNegoNeeded);
+        };
+    }, [handleNegoNeeded]);
+    const handleNegoNeedIncoming = useCallback(async ({ from, offer }) => {
+        const ans = await peer.getAnswer(offer);
+        socket.emit("peer:nego:done", { to: from, ans });
+    },
+        [socket]
+    );
+    const handleNegoNeedFinal = useCallback(async ({ ans }) => {
+        await peer.setLocalDescription(ans);
+    }, []);
+    useEffect(() => {
+        peer.peer.addEventListener("track", async (ev) => {
+            const RemoteStream = ev.streams;
+            console.log("GOT TRACKS!!")
+            setRemoteStream(RemoteStream[0]);
+        });
+    }, []);
+    useEffect(() => {
+        socket.on("user:joined", handleUserJoined);
+        socket.on("incoming:call", handleIncomingCall);
+        socket.on("call:accepted", handleCallAccepted);
+        socket.on("peer:nego:needed", handleNegoNeedIncoming);
+        socket.on("peer:nego:final", handleNegoNeedFinal);
+        return () => {
+            socket.off("user:joined", handleUserJoined);
+            socket.off("incoming:call", handleIncomingCall);
+            socket.off("call:accepted", handleCallAccepted);
+            socket.off("peer:nego:needed", handleNegoNeedIncoming);
+            socket.off("peer:nego:final", handleNegoNeedFinal);
+        };
+    }, [
+        socket,
+        handleUserJoined,
+        handleIncomingCall,
+        handleCallAccepted,
+        handleNegoNeedIncoming,
+        handleNegoNeedFinal,
+    ]);
+=======
             body : data
         };
         fetch('https://api.codex.jaagrav.in',config)
@@ -201,6 +434,7 @@ console.log(data);
     }
 
     console.log(code);
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
     return (
         <div className='room'>
             <div className="roomSidebar">
@@ -264,6 +498,30 @@ console.log(data);
                         console.log(roomId)
                     }}>Copy Room ID</button>
                     <button className='roomSidebarBtn'>Leave</button>
+<<<<<<< HEAD
+                    <button onClick={compile} className='roomSidebarBtn'>Run</button>
+
+                    <input
+                        type="text"
+                        id="input"
+                        name="input"
+                        placeholder='enter input'
+                        value={input}
+                        onChange={InputHandler}
+                    />
+
+                    <input
+                        type="text"
+                        id="output"
+                        name="output"
+                        placeholder='o/p'
+                        value={output}
+
+                    />
+
+
+                    <ChatBot socket={socket} />
+=======
                     <button onClick={compile}  className='roomSidebarBtn'>Run</button>
 
              <input
@@ -286,6 +544,7 @@ console.log(data);
  
           
 <ChatBot socket={socket}/>
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
 
 
 
@@ -294,9 +553,15 @@ console.log(data);
                 </div>
             </div>
             <AceEditor
+<<<<<<< HEAD
+                ref={AceEditorRef}
+                setOptions={{ useWorker: false }}
+                placeholder='Write your code here'
+=======
             ref={AceEditorRef}
  setOptions={{ useWorker: false }}
  placeholder='Write your code here'
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
                 className='roomCodeEditor'
                 mode={language}
                 keyboardHandler={codeKeyBinding}
@@ -317,10 +582,48 @@ console.log(data);
                     $blockScrolling: true
                 }}
                 value={code}
+<<<<<<< HEAD
+                onChange={(change) => handleChange(change)}
+
+            />
+            <Toaster />
+            
+            <div>
+            <h1>RoomPage</h1>
+      <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4>
+      { myStream && <button className="bt" onClick={sendStreams}>Send Stream</button>}
+      {remoteSocketId && <button className="bt" onClick={handleCallUser}>CALL</button>}
+      {myStream && (
+        <>
+          <h1>My Stream</h1>
+          <ReactPlayer
+            playing
+            muted
+            height="200px"
+            width="200px"
+            url={myStream}
+          />
+        </>
+      )}
+      {remoteStream && (
+        <>
+          <h1>Remote Stream</h1>
+          <ReactPlayer
+            playing
+            muted
+            height="200px"
+            width="200px"
+            url={remoteStream}
+          />
+        </>
+      )}
+    </div>
+=======
                 onChange={(change)=>handleChange(change)}
                 
             />
             <Toaster />
+>>>>>>> c7f649d7ae415e2cc30918a7f0c7ba5189433a0e
         </div>
     )
 }
